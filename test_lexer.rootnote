@@ -1,0 +1,32 @@
+Pool: MC, ED, WA, VB
+
+Board: Autumn
+Deck: Standard
+VB: "Autumn"
+ED: "Brian"
+MC: "Chris"
+WA: "Tommy"
+
+Setup:
+MC:
+Place Keep in 1
+Build sawmill 1
+Build workshop 9
+Build recruiter 9
+
+ED:
+Place Roost in 3
+Choose Leader: Charismatic
+
+WA:
+Draw Supporters
+
+VB:
+Choose Character: Thief
+Forest 10 2 6 11 12
+Reveal Quest F sword sword
+Reveal Quest F torch tea
+Reveal Quest R torch crossbow
+
+
+
