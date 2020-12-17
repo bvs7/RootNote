@@ -1,5 +1,7 @@
 # Parsing using a Lexer?...
 
+import ply.lex as lex
+
 tokens = [
   'CARD', 'NAME', 'NUMBER', 'EXHAUSTED', 'DOUBLE_WORD', 
   'POOL', 'BOARD', 'DECK', 'SETUP', 'FOREST', 'CRAFT', 
@@ -16,12 +18,5 @@ tokens = [
   'WITH', 'IN', 'LEFT']
 
 
-class Pattern:
-  def __init__(self, tok_list):
-    self.tok_list = tok_list
-
-  def match(self, l):
-    i = iter(l)
-    for tok in self.tok_list:
-      if not tok == next(i):
-        return False
+class RootNoteDoubleLexer(lex.Lexer):
+  
