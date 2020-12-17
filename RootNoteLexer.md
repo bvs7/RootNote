@@ -78,7 +78,7 @@
 `[MC_BUILD]{3}` // Check for building correctness in semantic analysis
 
 ### `ED_SETUP`:
-`Place Roost in CLEARING`\
+`FACTION: Place Roost in CLEARING`\
 `ED_LEADER`
 
 ### `ED_LEADER`:

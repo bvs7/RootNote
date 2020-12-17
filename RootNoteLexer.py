@@ -83,9 +83,6 @@ def t_NUMBER(t):
 def t_WORD(t):
   r'[a-zA-Z&\.]+'
   word = t.value
-  if word in reserved_words:
-    t.type = reserved_words[word]
-    return t
   for multiword in reserved_multiwords:
     if word == multiword[:len(word)]:
       # Check for multiword
@@ -97,6 +94,9 @@ def t_WORD(t):
         t.value = multiword
         t.lexer.skip(len(remaining_word))
         return t
+  if word in reserved_words:
+    t.type = reserved_words[word]
+    return t
   if word.lower() in helper_words:
     t.type = helper_words[word.lower()]
     return t

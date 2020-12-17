@@ -1,6 +1,6 @@
 Pool: MC, ED, WA, VB
 
-Board: Autumn
+Board: Winter M1 F2 R3 M4 F5 R6 M7 F8 R9 M10 F11 R12
 Deck: Standard
 VB: "Autumn"
 ED: "Brian"
@@ -10,9 +10,9 @@ WA: "Tommy"
 Setup:
 MC:
 Place Keep in 1
-Build sawmill 1
-Build workshop 9
-Build recruiter 9
+Build sawmill in 1
+Build workshop in 9
+Build recruiter in 9
 
 ED:
 Place Roost in 3
