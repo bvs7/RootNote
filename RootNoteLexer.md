@@ -45,7 +45,7 @@
 
 ### `DRAFT_POOL`:
 `Pool:`\
-`[FACTION]{5}`
+`[FACTION]{3,9}`
 
 ### `BOARD`:
 `Board: [Autumn|Winter|Lake|Mountain] [CLEARING_SPEC]?`\
