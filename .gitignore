@@ -1,3 +1,9 @@
 parser.out
 parsetab.py
 __pycache__/*
+
+build/*
+dist/*
+
+RootNote.egg-info/*
+*.pyc
