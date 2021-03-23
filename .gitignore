@@ -7,3 +7,6 @@ dist/*
 
 RootNote.egg-info/*
 *.pyc
+
+# vs Code
+*.code-workspace

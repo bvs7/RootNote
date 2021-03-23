@@ -1,5 +1,5 @@
 from ..RootState import * # pylint: disable=unused-wildcard-import
-from ..util import VEnum, OrderedVEnum, auto
+from ...util import VEnum, OrderedVEnum, auto
 
 # "Victory Points" details victory condition
 # Common operations:
@@ -21,10 +21,10 @@ class VP:
   def __init__(self, faction:Faction, vp = 0):
     self.faction = faction
     self.vp : Union[int,Suit,Faction] = vp
-    self.team = []
+    self.team = [] # Note friends in case of victory
 
   def victory(self):
-    raise VictoryException(self)
+    raise VictoryException(self.faction, self.team)
   
   def dominance(self, suit:Suit):
     self.vp = suit
@@ -36,6 +36,7 @@ class VP:
     self.team.append(vp)
 
   def __add__(self, n):
+    """ Return self plus n """
     if isinstance(n, int):
       if isinstance(self.vp,int):
         self.vp += n
@@ -45,7 +46,16 @@ class VP:
     raise ValueError
   
   def __sub__(self,n):
-    return self.__add__(-n)
+    if isinstance(n, int):
+      return self.__add__(-n)
+    elif isinstance(n, self.__class__):
+      return self.__add__(-n.vp)
+    raise ValueError
+
+  def __int__(self):
+    if isinstance(self.vp, int):
+      return self.vp
+    return -1
 
   def __repr__(self):
     if isinstance(self.vp, int):
@@ -124,9 +134,9 @@ class Track:
       return object.__getattribute__(self,name)
 
 class FactionState:
-  def __init__(self, faction:Faction, board_state:BoardState):
+  def __init__(self, faction:Faction, root_state:RootState):
     self.faction = faction
-    self.board_state = board_state
+    self.root_state = root_state
     self.hand : int = 0
     self.warrior_supply = 0
     self.crafted_improvements : List[Card] = []

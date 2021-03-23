@@ -1,4 +1,22 @@
-from .FactionState import * # pylint: disable=unused-wildcard-import
+
+from typing import List, Dict
+
+from ..RootTypes import *
+from .FactionState import *
+
+
+class MC_Building(Building):
+  pass
+
+class Sawmill(MC_Building):
+  pass
+
+class Workshop(MC_Building):
+  pass
+
+class Recruiter(MC_Building):
+  pass
+
 
 class MC_Track(Track):
   def __init__(self, building:Building):
@@ -51,7 +69,7 @@ class MC_State(FactionState):
         sm_s = [s for s in cl.buildings if s == sm]
         for s in sm_s:
           self.wood -= 1
-          cl.tokens.extend([Token.wood]*n)
+          cl.tokens.extend([Token.wood]*n_sm)
 
   def get_crafting_ability(self):
     capability : Dict[Suit,int] = {Suit.M:0,Suit.F:0,Suit.R:0}

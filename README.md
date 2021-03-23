@@ -26,3 +26,4 @@ Build [CW]
 
 Clearings can be identified by either a directional scheme (North, South, Central, West, East, Mid, etc) or by Bot Priority Markers? Or, use a custom mapping defined at top
 
+
