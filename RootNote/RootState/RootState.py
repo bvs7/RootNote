@@ -100,15 +100,20 @@ class Clearing:
     self.n = n
     self.suit = suit
     self.build_slots = build_slots
-    self.warriors : List[Faction] = []
+    self.warriors : Dict[Faction,int] = {}
     self.buildings : List[Building] = []
     self.tokens : List[Token] = []
     self.pawns : List[Faction] = []
 
   def rule(self) -> Optional[Faction]:
-    # check for lizards (later)
+    # check for gardens? (later)
     f_totals = {}
-    for faction in (self.warriors + [b.faction for b in self.buildings]):
+    for faction in self.warriors:
+      if not faction in f_totals:
+        f_totals[faction] = 0
+      f_totals[faction] += self.warriors[faction]
+    for building in self.buildings:
+      faction = building.faction
       if not faction in f_totals:
         f_totals[faction] = 0
       f_totals[faction] += 1
@@ -130,7 +135,7 @@ class Clearings(list):
 
   def __getitem__(self,i):
     i -= 1
-    if i < 0 or i > len(self):
+    if i < 0 or i >= len(self):
       raise IndexError("Index %d out of range, clearings use 1-indexing" % i)
     return super().__getitem__(i)
 
