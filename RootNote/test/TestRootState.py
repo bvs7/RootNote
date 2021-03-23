@@ -1,4 +1,4 @@
-from ..RootState import *
+from ..RootState import * # pylint: disable=unused-wildcard-import
 from unittest import TestCase
 
 class TestBoardState(TestCase):
@@ -11,7 +11,7 @@ class TestBoardState(TestCase):
     bs2 = BoardState()
     self.assertEqual(bs2.items['sword'],2)
 
-    self.assertEqual(bs.paths['1-5'],Path.PATH)
+    self.assertEqual(bs.paths[(1,5)],Path.PATH)
     self.assertIn("4-9-12", bs.forests)
 
     self.assertIsNone(bs.clearings[12].rule())
@@ -62,3 +62,6 @@ class TestBoardState(TestCase):
 
   def test_item(self):
     i = Item(ItemType.sword)
+
+    self.assertEqual(i.ex, False)
+    self.assertEqual(i.t, ItemType.sword)

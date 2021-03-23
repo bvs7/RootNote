@@ -77,12 +77,18 @@ class ItemType(VEnum):
 class Item:
   t : ItemType
   ex : bool = False
+  def refresh(self):
+    self.ex = True
+  def exhaust(self):
+    self.ex = False
   
 Leader = VEnum('Leader', 'Builder Charismatic Commander Despot')
 Relation = OrderedVEnum("Relation",'Hostile Indifferent Favorable Cordial Allied')
 Board = VEnum('Board', 'Autumn Winter Lake Mountain')
 Path = VEnum('Path','PATH RIVER CLOSED')
-Deck = VEnum("Deck", 'Standard E_P')
+DeckType = VEnum("DeckType", 'Standard E_P')
+
+TurnPhase = VEnum("TurnPhase", 'Inactive Birdsong Daylight Evening')
 
 
 class RootException(Exception):
@@ -129,15 +135,14 @@ class Clearings(list):
     return super().__getitem__(i)
 
 class Card:
-  def __init__(self):
-    pass
+  pass
 
 # TODO: lizard redirect?
-class Deck_:
-  def __init__(self, deck_type:Deck):
+class Deck:
+  def __init__(self, deck_type:DeckType):
     self.deck_type = deck_type
     self.deck_count = 54
-    self.discard : List[Card] = []
+    self.discard_pile : List[Card] = []
 
   def draw(self, n):
     for _ in range(n):
@@ -145,9 +150,12 @@ class Deck_:
         self.reshuffle()
       self.deck_count -= 1
 
+  def discard(self, card:Card):
+    self.discard_pile.append(card)
+
   def reshuffle(self):
-    n = len(self.discard)
-    self.discard = []
+    n = len(self.discard_pile)
+    self.discard_pile = []
     self.deck_count += n
 
 BOARDS = {
@@ -156,48 +164,48 @@ BOARDS = {
     "build_slots": [1,2,1,1,2,1.5,2,2,2,1.5,2.5,1.5],
     "suits": [Suit.F,Suit.M,Suit.R,Suit.R,Suit.R,Suit.F,
               Suit.M,Suit.F,Suit.M,Suit.R,Suit.M,Suit.F],
-    "paths": {"1-5":Path.PATH,"1-9":Path.PATH,"1-10":Path.PATH,
-      "2-5":Path.PATH,"2-6":Path.PATH,"2-10":Path.PATH,"3-6":Path.PATH,
-      "3-7":Path.PATH,"3-11":Path.PATH,"4-8":Path.PATH,"4-9":Path.PATH,
-      "4-12":Path.PATH,"6-11":Path.PATH,"7-8":Path.PATH,"7-12":Path.PATH,
-      "9-12":Path.PATH,"10-12":Path.PATH,"11-12":Path.PATH,"4-7":Path.RIVER,
-      "5-10":Path.RIVER,"7-11":Path.RIVER,"10-11":Path.RIVER},
+    "paths": {(1,5):Path.PATH,(1,9):Path.PATH,(1,10):Path.PATH,
+      (2,5):Path.PATH,(2,6):Path.PATH,(2,10):Path.PATH,(3,6):Path.PATH,
+      (3,7):Path.PATH,(3,11):Path.PATH,(4,8):Path.PATH,(4,9):Path.PATH,
+      (4,12):Path.PATH,(6,11):Path.PATH,(7,8):Path.PATH,(7,12):Path.PATH,
+      (9,12):Path.PATH,(10,12):Path.PATH,(11,12):Path.PATH,(4,7):Path.RIVER,
+      (5,10):Path.RIVER,(7,11):Path.RIVER,(10,11):Path.RIVER},
     "forests": {"1-2-5-10","1-9-10-12","2-6-10-11-12",
       "3-6-11","3-7-11-12","4-7-8-12","4-9-12"},
   },
   Board.Winter : {
     "n_clearings": 12,
     "build_slots": [1,1,2,2,2,2,1,1.5,1.5,1,2.5,2.5],
-    "paths": {"1-5":Path.PATH,"1-10":Path.PATH,"1-11":Path.PATH,
-      "2-6":Path.PATH,"2-7":Path.PATH,"2-12":Path.PATH,"3-7":Path.PATH,
-      "3-8":Path.PATH,"3-12":Path.PATH,"4-9":Path.PATH,"4-10":Path.PATH,
-      "4-11":Path.PATH,"5-6":Path.PATH,"8-9":Path.PATH,"8-12":Path.PATH,
-      "9-11":Path.PATH,"7-12":Path.RIVER,"10-11":Path.RIVER,
-      "11-12":Path.RIVER},
+    "paths": {(1,5):Path.PATH,(1,10):Path.PATH,(1,11):Path.PATH,
+      (2,6):Path.PATH,(2,7):Path.PATH,(2,12):Path.PATH,(3,7):Path.PATH,
+      (3,8):Path.PATH,(3,12):Path.PATH,(4,9):Path.PATH,(4,10):Path.PATH,
+      (4,11):Path.PATH,(5,6):Path.PATH,(8,9):Path.PATH,(8,12):Path.PATH,
+      (9,11):Path.PATH,(7,12):Path.RIVER,(10,11):Path.RIVER,
+      (11,12):Path.RIVER},
     "forests": {"1-2-5-6-11-12","1-4-10-11","2-3-7-12",
       "3-8-12","4-9-11","8-9-11-12"},
   },
   Board.Lake : {
     "n_clearings": 12,
     "build_slots": [2,1,1,1,2.5,2,1,1,1,2.5,2.5,2.5],
-    "paths": {"1-5":Path.PATH,"1-9":Path.PATH,"2-7":Path.PATH,"2-8":Path.PATH,
-      "2-10":Path.PATH,"3-8":Path.PATH,"3-9":Path.PATH,"3-12":Path.PATH,
-      "4-5":Path.PATH,"4-6":Path.PATH,"5-11":Path.PATH,"6-7":Path.PATH,
-      "6-11":Path.PATH,"7-10":Path.PATH,"7-11":Path.PATH,"8-10":Path.PATH,
-      "9-12":Path.PATH,"1-10":Path.RIVER,"1-11":Path.RIVER,"1-12":Path.RIVER,
-      "10-11":Path.RIVER,"10-12":Path.RIVER,"11-12":Path.RIVER},
+    "paths": {(1,5):Path.PATH,(1,9):Path.PATH,(2,7):Path.PATH,(2,8):Path.PATH,
+      (2,10):Path.PATH,(3,8):Path.PATH,(3,9):Path.PATH,(3,12):Path.PATH,
+      (4,5):Path.PATH,(4,6):Path.PATH,(5,11):Path.PATH,(6,7):Path.PATH,
+      (6,11):Path.PATH,(7,10):Path.PATH,(7,11):Path.PATH,(8,10):Path.PATH,
+      (9,12):Path.PATH,(1,10):Path.RIVER,(1,11):Path.RIVER,(1,12):Path.RIVER,
+      (10,11):Path.RIVER,(10,12):Path.RIVER,(11,12):Path.RIVER},
     "forests": {"0-1-5-11","0-1-9-12","2-7-10","2-8-10",
       "0-3-8-10-12","3-9-12","4-5-6-11","6-7-11","0-7-10-11"},
   },
   Board.Mountain: {
     "n_clearings": 12,
     "build_slots": [2,2,2,2,1,1,1,1,2.5,1.5,2.5,2.5],
-    "paths": {"1-8":Path.PATH,"1-9":Path.PATH,"2-6":Path.PATH,"2-11":Path.PATH,
-      "3-6":Path.PATH,"3-11":Path.PATH,"4-8":Path.PATH,"4-12":Path.PATH,
-      "5-10":Path.PATH,"5-11":Path.PATH,"7-12":Path.PATH,"9-10":Path.PATH,
-      "9-12":Path.PATH,"10-11":Path.PATH,"10-12":Path.PATH,"2-10":Path.RIVER,
-      "4-10":Path.RIVER,"2-5":Path.CLOSED,"3-7":Path.CLOSED,"5-9":Path.CLOSED,
-      "6-11":Path.CLOSED,"8-9":Path.CLOSED,"11-12":Path.CLOSED},
+    "paths": {(1,8):Path.PATH,(1,9):Path.PATH,(2,6):Path.PATH,(2,11):Path.PATH,
+      (3,6):Path.PATH,(3,11):Path.PATH,(4,8):Path.PATH,(4,12):Path.PATH,
+      (5,10):Path.PATH,(5,11):Path.PATH,(7,12):Path.PATH,(9,10):Path.PATH,
+      (9,12):Path.PATH,(10,11):Path.PATH,(10,12):Path.PATH,(2,10):Path.RIVER,
+      (4,10):Path.RIVER,(2,5):Path.CLOSED,(3,7):Path.CLOSED,(5,9):Path.CLOSED,
+      (6,11):Path.CLOSED,(8,9):Path.CLOSED,(11,12):Path.CLOSED},
     "forests": {"1-8-9","2-5-11","2-6-11","3-6-11","3-7-11-12",
       "4-8-9-12","5-9-10","5-10-11","9-10-12","10-11-12"},
   }
@@ -216,7 +224,7 @@ ITEMS = {
 
 # BoardState
 class BoardState:
-  def __init__(self, board:Board=Board.Autumn, deck:Deck=Deck.Standard, clearing_suits:List[Suit] = []):
+  def __init__(self, board:Board=Board.Autumn, deck_type:DeckType=DeckType.Standard, clearing_suits:List[Suit] = []):
     b = BOARDS[board]
     if len(clearing_suits) > 0:
       b["suits"] = clearing_suits
@@ -232,6 +240,8 @@ class BoardState:
     self.forests = b["forests"]
     # This is mutable
     self.items = ITEMS.copy()
+
+    self.deck = Deck(deck_type)
     
 
 # RootState

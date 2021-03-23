@@ -1,4 +1,4 @@
-from ..RootState import *
+from ..RootState import * # pylint: disable=unused-wildcard-import
 from ..util import VEnum, OrderedVEnum, auto
 
 # "Victory Points" details victory condition
@@ -140,4 +140,5 @@ class FactionState:
         self.vp.coalition(value)
     else:
       object.__setattr__(self,name,value)
+
  

@@ -1,4 +1,4 @@
-from .FactionState import *
+from .FactionState import * # pylint: disable=unused-wildcard-import
 
 class TeaTrack(Track):
   def __init__(self):

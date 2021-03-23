@@ -1,4 +1,4 @@
-from .FactionState import *
+from .FactionState import * # pylint: disable=unused-wildcard-import
 
 class Decree:
   def __init__(self):
