@@ -1,4 +1,7 @@
-from ..RootState import * # pylint: disable=unused-wildcard-import
+from typing import Union
+
+from ..RootTypes import *
+from ..RootState import RootState, RootException
 from ...util import VEnum, OrderedVEnum, auto
 
 # "Victory Points" details victory condition
@@ -143,7 +146,7 @@ class FactionState:
     self.vp : VP = VP(faction)
   
   def __setattr__(self, name, value):
-    if name == "vp" and name in self.__dict__:
+    if name == "vp":
       if isinstance(value, Suit):
         self.vp.dominance(value)
       if isinstance(value, Faction):

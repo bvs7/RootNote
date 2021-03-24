@@ -7,17 +7,25 @@ from .RootTypes import *
 class RootException(Exception):
   pass
 
-@dataclasses.dataclass
 class Clearing:
-  board_state : "Board"
-  n : int
-  suit : Suit
-  build_slots : int
-  ruin : bool
-  warriors : Dict[Faction, int] = {}
-  buildings : List[Building] = []
-  tokens : List[Token] = []
-  pawns : List[Faction] = []
+
+  def __init__(self, 
+      board_state : "Board", n : int, suit : Suit, build_slots : int, ruin:bool,
+      warriors:Optional[Dict[Faction, int]] = None,
+      buildings : Optional[List[Building]] = None,
+      tokens : Optional[List[Token]] = None,
+      pawns : Optional[List[Faction]] = None,):
+
+    self.board_state : "Board" = board_state
+    self.n           : int     = n
+    self.suit        : Suit    = suit
+    self.build_slots : int     = build_slots
+    self.ruin        : bool    = ruin
+
+    self.warriors    : Dict[Faction, int] = warriors if warriors else {}
+    self.buildings   : List[Building]     = buildings if buildings else []
+    self.tokens      : List[Token]        = tokens if tokens else []
+    self.pawns       : List[Faction]      = pawns if pawns else []
 
 
   def rule(self) -> Optional[Faction]:
@@ -71,12 +79,13 @@ class Board:
     self.paths = dict([(cs,Path(paths[cs])) for cs in paths])
     self.forests : Set[str] = board_setup["forests"]
   
+  # TODO: move this fn to new ClearingList object?
   def __getitem__(self, key):
     # TODO: parse key better
     if key in self.mapping:
       idx = self.mapping[key]
     idx = key - 1
-    if idx < 0 or idx >= len(self):
+    if idx < 0 or idx >= len(self.clearings):
       raise IndexError("Index %d out of range, clearings use 1-indexing" % idx)
     return self.clearings[idx]
     
@@ -113,3 +122,8 @@ class RootState:
     self.deck = Deck(deck_type)
     self.item_cache = ITEMS.copy()
     self.factions = {} # maps faction name to faction Board?
+
+  # TODO: Update function. Calls sub updates on factions with args?
+  # Could eventually take a slightly worked RootMove and call appropriate things.
+  def update(self, name, *args, faction = None):
+    pass

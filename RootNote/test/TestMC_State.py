@@ -1,5 +1,5 @@
-from .. import *
-from ..Factions.MC_State import MC_State
+from ..RootState import RootState, RootTypes
+from ..RootState.Factions.MC_State import MC_State
 from unittest import TestCase
 
 class TestMC_State(TestCase):
@@ -8,16 +8,16 @@ class TestMC_State(TestCase):
     pass
 
   def test_reachable_clearings(self):
-    bs = BoardState()
+    board = RootState.Board()
 
-    for c in bs.clearings:
-      c.warriors.append(Faction.MC)
-      self.assertEqual(c.rule(),Faction.MC)
+    for c in board.clearings:
+      c.warriors[RootTypes.Faction.MC] = 1
+      self.assertEqual(c.rule(),RootTypes.Faction.MC)
 
     for c in [4,6,11,12]:
-      bs.clearings[c].warriors.append(Faction.ED)
+      board[c].warriors[RootTypes.Faction.ED] = 1
 
-    mc = MC_State(bs)
+    mc = MC_State(board)
     rc = mc.reachable_clearings(1)
     for i in [1,2,5,9,10]:
       self.assertIn(i, rc)

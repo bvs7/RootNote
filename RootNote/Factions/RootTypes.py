@@ -27,14 +27,11 @@ class Suit(VEnum):
       other = self.__getattribute__(other)
     return self == self.B and other != self.B
 
-class Faction:
-  pass
+FACTIONS = []
 
-class Building: 
-  pass
+BUILDINGS = []
 
-class Token:
-  pass
+TOKENS = []
 
 class ItemType(VEnum):
   sword = auto()

@@ -20,7 +20,10 @@ class VEnumMeta(EnumMeta):
     return super().__call__(value,vnames,module=module,qualname=qualname,type=type,start=start)
 
   def __contains__(cls, item):
+    print(item)
+    print(cls)
     item = cls.__init__(item)
+    print(item)
     item.name in cls._member_map_
 
 class VEnum(Enum, metaclass=VEnumMeta):
