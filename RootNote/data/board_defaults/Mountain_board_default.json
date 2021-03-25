@@ -1,0 +1,163 @@
+{
+  "board_type": "Mountain",
+  "clearings": [
+    {
+      "idx": 1,
+      "suit": null,
+      "slots": 2,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 2,
+      "suit": null,
+      "slots": 2,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 3,
+      "suit": null,
+      "slots": 2,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 4,
+      "suit": null,
+      "slots": 2,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 5,
+      "suit": null,
+      "slots": 1,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 6,
+      "suit": null,
+      "slots": 1,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 7,
+      "suit": null,
+      "slots": 1,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 8,
+      "suit": null,
+      "slots": 1,
+      "ruin": false,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 9,
+      "suit": null,
+      "slots": 2.0,
+      "ruin": true,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 10,
+      "suit": null,
+      "slots": 1.0,
+      "ruin": true,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 11,
+      "suit": null,
+      "slots": 2.0,
+      "ruin": true,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    },
+    {
+      "idx": 12,
+      "suit": null,
+      "slots": 2.0,
+      "ruin": true,
+      "warriors": {},
+      "buildings": [],
+      "tokens": [],
+      "__class__": "Clearing"
+    }
+  ],
+  "paths": {
+    "1-8": "PATH",
+    "1-9": "PATH",
+    "2-6": "PATH",
+    "2-11": "PATH",
+    "3-6": "PATH",
+    "3-11": "PATH",
+    "4-8": "PATH",
+    "4-12": "PATH",
+    "5-10": "PATH",
+    "5-11": "PATH",
+    "7-12": "PATH",
+    "9-10": "PATH",
+    "9-12": "PATH",
+    "10-11": "PATH",
+    "10-12": "PATH",
+    "2-10": "RIVER",
+    "4-10": "RIVER",
+    "2-5": "CLOSED",
+    "3-7": "CLOSED",
+    "5-9": "CLOSED",
+    "6-11": "CLOSED",
+    "8-9": "CLOSED",
+    "11-12": "CLOSED"
+  },
+  "forests": [
+    [5,9,10],
+    [2,5,11],
+    [4,8,9,12],
+    [3,6,11],
+    [10,11,12],
+    [9,10,12],
+    [1,8,9],
+    [5,10,11],
+    [3,7,11,12],
+    [2,6,11]
+  ],
+  "__class__": "Board"
+}

@@ -69,7 +69,7 @@ def forests_setup(board_type:BoardType) -> ForestList:
   board_setup = BOARDS[board_type]
   forestset = []
   for f in board_setup["forests"]:
-    cs = [ClearingIndex(c) for c in f.split("-")]
+    cs = [ClearingIndex(int(c)) for c in f.split("-")]
     fs = sorted(cs)
     forestset.append(fs)
 
@@ -83,10 +83,14 @@ class Board(Deserializable):
     
     # Create board_setup from board_type
     self.board_type : BoardType           = board_type
-    self.clearings  : List[Clearing]      = clearing_setup(board_type)
-    self.paths      : Optional[PathDict]  = paths_setup(board_type)
-    self.forests    : Optional[ForestList] = forests_setup(board_type)
+    self.clearings  : List[Clearing]      = []
+    self.paths      : Optional[PathDict]  = None
+    self.forests    : Optional[ForestList] = None
 
+  @classmethod
+  def load_default(cls,board_type:BoardType):
+    with open("RootNote/data/board_defaults/{}_board_default.json".format(board_type), 'r') as fp:
+      return RootJSON.load(fp)
 
   @classmethod
   def _deserialize(cls, **kwargs):
@@ -94,12 +98,15 @@ class Board(Deserializable):
     b.clearings = ClearingList(kwargs.pop("clearings"))
     b.__dict__.update(kwargs)
     return b
+
+  def __repr__(self):
+    return "{}({}): {}".format(self.__class__.__name__, self.board_type, self.clearings)
     
 # TODO: lizard redirect?
 class Deck:
   def __init__(self, deck_type:DeckType):
     self.deck_type = deck_type
-    self.deck_count = 54
+    self.deck_count = 54 # Remove dominance for 2p
     self.discard_pile : List[Card] = []
 
   def draw(self, n):
@@ -116,6 +123,9 @@ class Deck:
     self.discard_pile = []
     self.deck_count += n
 
+  def __repr__(self):
+    return "{}({}): {}|{}".format(self.__class__.__name__, self.deck_type, self.deck_count, len(self.discard_pile))
+
 class RootState(Deserializable):
   def __init__(self):
 
@@ -128,7 +138,10 @@ class RootState(Deserializable):
 
   ## Setup Operations:
   def chooseBoardType(self, board_type : BoardType):
-    self.board = Board(board_type)
+    self.board = Board.load_default(board_type)
+
+  def chooseDeckType(self, deck_type : DeckType):
+    self.deck = Deck(deck_type)
 
   # TODO: Update function. Calls sub updates on factions with args?
   # Could eventually take a slightly worked RootMove and call appropriate things.
@@ -141,3 +154,17 @@ class RootState(Deserializable):
     del kwargs["__class__"]
     r.__dict__.update(kwargs)
     return r
+
+  def __repr__(self):
+    msg =("{}:\n".format(self.__class__.__name__) + \
+          "{}\n".format(self.board) + \
+          "Deck: {}\n".format(self.deck) + \
+          "Items: {}\n".format(self.item_cache) )
+    return msg
+
+if __name__ == "__main__":
+  for board_type in BoardType:
+    r = RootState()
+    r.chooseBoardType(board_type)
+    r.chooseDeckType(DeckType.Standard)
+    print(r)
