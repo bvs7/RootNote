@@ -4,7 +4,7 @@ class VEnumMeta(EnumMeta):
   def __call__(cls, value, names=None, *, module=None, qualname=None, type=None, start=None):
     vnames = None
     if names is None:
-      return super().__call__(value,names, module=module,qualname=qualname,type=type,start=start)
+      return getattr(cls,value)
     if isinstance(names, str):
       vnames = names.replace(',', ' ').split()
       vnames = [(name,name) for name in vnames]
@@ -26,7 +26,11 @@ class VEnumMeta(EnumMeta):
   def __repr__(cls):
     return "<{}:[{}]>".format(cls.__name__, ",".join(cls._member_map_.keys()))
 
-class VEnum(Enum, metaclass=VEnumMeta):
+class VEnum2(Enum, metaclass=VEnumMeta):
+
+  def __init__(self, *args, **kwargs):
+    print(args,kwargs)
+
   def __repr__(self):
     return "<%s.%s>" % (self.__class__.__name__, self.name)
   
@@ -40,7 +44,7 @@ class VEnum(Enum, metaclass=VEnumMeta):
   def __hash__(self):
     return hash(self.name)
 
-class OrderedVEnum(VEnum):
+class OrderedVEnum(VEnum2):
   def __lt__(self, other):
     other = self.__class__(other)
     l = list(self.__class__)
@@ -50,6 +54,24 @@ class OrderedVEnum(VEnum):
     return self == other or self < other
 
 # defined with dynamic getattr to prevent pylint errors
+
 class auto:
   def __getattr__(self, name):
     return self.__getattribute__(name)
+
+class MetaStr(type):
+  def __new__(cls, name, bases, classdict):
+    return super().__new__(cls, name,bases,classdict)
+  
+  def __iter__(cls):
+    return iter([k for k in cls.__dict__ if not k[0:2] == "__"])
+
+  def __contains__(cls, key):
+    return key in cls.__dict__
+
+class VEnum(str, metaclass = MetaStr):
+  def __init__(self, value):
+    if value in self.__dict__:
+      super().__init__(self.__getattribute__(value))
+    else:
+      raise TypeError(type(self).__name__ + ": " + value)

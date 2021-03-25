@@ -31,6 +31,97 @@ Battle MC [CW] (3,2) # Eyrie has 4, MC has 0
 Build [CW]
 ```
 
+
+## RootState
+The class RootState should contain all necessary components of a game of root. This includes:
+
+RootState:
+- Board State
+  - Board Type
+  - Clearing States (with ClearingIndex?) fn for str -> ClearingIndex
+    - Warriors (number for each non-VB faction)
+    - Buildings (Max no. of building slots)
+      - Ruin (Item(s))
+    - Tokens
+  - Paths : Mapping[Tuple[Clearing,Clearing], PathType]
+  - Forests : Set[List[Clearing]]
+- Deck State (with discard pile)
+  - Deck Type
+  - Lizards?
+- Item Cache
+- Drafting Info?
+- Faction States
+  - State for each faction board
+
+### Building a Game
+
+When do each of the parts of the board state need to be decided?
+
+RootState:
+- Board State | Immediately? Needed for any other decisions
+  - Board Type | During setup, before adset draft, but with basic faction assignment
+  - Clearing States (with ClearingIndex?) fn for str -> ClearingIndex | Initialized before faction setup, with Board creation? Edited with faction setup
+    - Suit
+    - Warriors (number for each non-VB faction)
+    - Buildings (Max no. of building slots)
+      - Ruin (number of items under)
+    - Tokens
+  - Paths : Mapping[Tuple[Clearing,Clearing], PathType] | Initialized with board setup
+  - Forests : Set[List[Clearing]] | Initialized with Board setup
+- Deck State (with discard pile) | Initialized before basic faction choices, before adset draft, with board?
+  - Deck Type
+  - Lizards? | Edits the discard info upon Lizard setup
+- Item Cache | Initialized with Board?
+- Drafting Info?
+- Faction States
+  - State for each faction board
+
+Phases of setup for states:
+Board State:
+- Init: Select Board Type: Init Clearings/Paths/Forests with defaults!
+- Might as well separate default suits for later
+
+Deck State:
+- Init: Deck Type
+
+Drafting Info
+Faction Info
+
+### Setup Phase
+Use cases:
+- Basic Setup, Simultaneous setup?
+- AdSet, Rigorous setup
+
+#### AdSet:
+1) Choose Map | Choose Deck
+2) Seat Players? (Not necessary to notate)
+3) Draw Cards (Still nothing noted?)
+4) Set Up Hirelings (Optional, not now)
+5) Deal Factions to Draft Pool (Note which factions are available. Lock Last White Card assumed)
+6) One by One, note faction choices and setup. Faction choice/player name, Setup choices
+7) Hands assumed
+
+So what is the path for state setup?
+
+- Note Board Type and Beck Type in any order, Note Board clearing suits
+- Note Factions in Draft Pool
+- Note player choices and setup options for each faction. Init faction Boards during each
+- Finish setup (Items, Turn order, etc?) Move to play phase
+
+#### Basic Setup:
+Fewest Requirements possible:
+
+Phase 1:
+- Assign Factions to Players ("Pick" with no draft -> assign?)
+- Choose Board and Deck
+- Choose seating order
+Phase 2:
+- Faction Setup
+
+#### Shared Requirements:
+- Board and Deck must be decided before any faction setup
+- Seating order decided before any faction setup
+
 Clearings can be identified by either a directional scheme (North, South, Central, West, East, Mid, etc) or by Bot Priority Markers? Or, use a custom mapping
 
 ### Types:
@@ -99,3 +190,4 @@ Desired behavior of dependent types:
 - Check if obj is building/token/faction
 - Get faction of building/token
 - Get list of buildings/tokens/buildings+tokens
+
