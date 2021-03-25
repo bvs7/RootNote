@@ -33,4 +33,69 @@ Build [CW]
 
 Clearings can be identified by either a directional scheme (North, South, Central, West, East, Mid, etc) or by Bot Priority Markers? Or, use a custom mapping
 
+### Types:
+#### Independent of Factions:
+- BoardType
+- Suit
+- PathType
+- DeckType
+- Card (Base type, with functional methods)
+- TurnPhase
+- GamePhase (Setup or Turn(Faction))
 
+#### Dependent on Factions, used in general?:
+- Faction
+- Building
+- Token
+
+
+How to organize everything?
+
+There are General Parts:
+
+Types
+State
+Actions
+Parser
+
+Then there are faction parts for each of these
+
+F[Types]
+F[State]
+F[Actions]
+F[Parser]
+
+And Bases for building things?
+
+Base_Types
+Base_State?
+Base_Actions?
+Base_Parser?
+
+Dependencies seem to go:
+
+Types -> F[Types] -> Base_Types
+
+Base_State -> Types
+State -> F[State] -> Base_State
+
+Base_Actions -> Types
+Actions -> F[Actions] -> Base_Actions
+
+Base_Parser -> Types
+Base_Parser -> State?
+Base_Parser -> Actions?
+Parser -> F[Parser] -> Base_Parser
+
+So, Types is its own module?
+No, Base is its own module
+Each faction is its own module? Or just own file?
+
+lets do fewer modules for now...
+
+with ordered imports?
+
+Desired behavior of dependent types:
+- Check if obj is building/token/faction
+- Get faction of building/token
+- Get list of buildings/tokens/buildings+tokens
